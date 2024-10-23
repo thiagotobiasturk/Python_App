@@ -67,7 +67,6 @@ class ObjectRecognitionApp(App):
         input_shape = self.input_details[0]['shape']
         input_tensor = cv2.resize(frame, (input_shape[2], input_shape[1]))
 
-        # Normalize the image to the range [0, 255] and convert to UINT8
         input_tensor = np.clip(input_tensor, 0, 255).astype(np.uint8)
         input_tensor = np.expand_dims(input_tensor, axis=0)  # Add batch dimension
 
