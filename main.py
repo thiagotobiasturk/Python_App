@@ -1,9 +1,9 @@
 import kivy
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.graphics.texture import Texture
 from kivy.uix.image import Image
-from kivy.clock import Clock
+from kivy.uix.button import Button
+from kivy.graphics.texture import Texture
 import cv2
 import numpy as np
 import tensorflow as tf
@@ -28,15 +28,18 @@ class ObjectRecognitionApp(App):
         return labels
 
     def build(self):
+        layout = BoxLayout(orientation='vertical')
         self.img_widget = Image()
-        layout = BoxLayout()
+        capture_button = Button(text='Capture Photo')
+        capture_button.bind(on_press=self.capture_photo)  # Bind button to capture method
+
         layout.add_widget(self.img_widget)
-        # Start the camera capture loop
-        Clock.schedule_interval(self.update_frame, 1.0 / 30.0)
-        self.capture = cv2.VideoCapture(0)  # Change 0 to 1, 2, etc. to use a different camera
+        layout.add_widget(capture_button)
+
+        self.capture = cv2.VideoCapture(0)  # Open the camera
         return layout
 
-    def update_frame(self, dt):
+    def capture_photo(self, instance):
         ret, frame = self.capture.read()
         if ret:
             # Object recognition logic using TFLite model
@@ -90,6 +93,11 @@ class ObjectRecognitionApp(App):
                 detections.append((boxes[0][i], classes[0][i]))
 
         return detections  # Return the bounding boxes and class IDs
+
+    def on_stop(self):
+        # Release the camera when the app stops
+        if self.capture.isOpened():
+            self.capture.release()
 
 if __name__ == '__main__':
     ObjectRecognitionApp().run()
