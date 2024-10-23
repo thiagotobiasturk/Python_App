@@ -4,7 +4,9 @@
 
 To run this application, you need to have the following:
 
-- **Python 3.8**: The application is designed to work with Python 3.8. The Python executable for version 3.8 is included in this repository. You can find it in the `python-3.8` folder.
+- **Python 3.8**: The application is designed to work with Python 3.8. You can download the installer from the official [Python website](https://www.python.org/downloads/release/python-380/).
+
+
 
 ## Installation
 
